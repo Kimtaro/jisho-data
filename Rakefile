@@ -2,6 +2,28 @@ DATA_DIR = File.join(File.dirname(__FILE__), 'data') + '/'
 
 task :default => ['data:all']
 
+namespace :git do
+  desc "Git pull"
+  task :pull do
+    sh "git pull"
+  end
+
+  desc "Git push"
+  task :push do
+    sh "git push"
+  end
+  
+  desc "Git add ."
+  task :add do |path|
+    sh "git add #{path}"
+  end
+  
+  desc "Git commit"
+  task :commit do |message|
+    sh "git commit -m '#{message}'"
+  end
+end
+
 namespace :data do
   task :ensure_data_directory do
     Dir.mkdir(DATA_DIR) unless File.exists?(DATA_DIR)
@@ -9,8 +31,18 @@ namespace :data do
 
   desc "Download and update all data"
   task :all do
-    Rake::Task['data:dl:jmdict'].invoke
-    Rake::Task['data:commit:jmdict'].invoke
+    Rake::Task['git:pull'].invoke
+    Rake::Task['data:update:jmdict'].invoke
+    Rake::Task['git:push'].invoke
+  end
+  
+  namespace :update do
+    desc "Update JMdict"
+    task :jmdict do
+      Rake::Task['data:dl:jmdict'].invoke
+      Rake::Task['git:add'].invoke(DATA_DIR)
+      Rake::Task['git:commit'].invoke("JMdict #{Time.now}")
+    end
   end
 
   namespace :dl do
