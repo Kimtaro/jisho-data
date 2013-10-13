@@ -14,13 +14,13 @@ namespace :git do
   end
   
   desc "Git add ."
-  task :add do |t, args|
-    sh "git add #{args[:arg1]}"
+  task :add, :path do |t, args|
+    sh "git add #{args[:path]}"
   end
   
   desc "Git commit"
-  task :commit do |t, args|
-    sh "git commit -m '#{args[:arg1]}'"
+  task :commit, :message do |t, args|
+    sh "git commit -m '#{args[:message]}'"
   end
 end
 
