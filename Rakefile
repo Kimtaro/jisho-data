@@ -38,6 +38,7 @@ namespace :data do
     Rake::Task['data:update:jmdict'].invoke
     Rake::Task['data:update:kanjidic2'].invoke
     Rake::Task['data:update:radk'].invoke
+    Rake::Task['data:update:tanaka'].invoke
     Rake::Task['git:push'].invoke
   end
   
@@ -62,6 +63,13 @@ namespace :data do
       Rake::Task['git:add'].invoke(DATA_DIR)
       Rake::Task['git:commit'].invoke("Radk #{Time.now}")
     end
+    
+    desc "Update Tanaka corpus"
+    task :tanaka do
+      Rake::Task['data:dl:tanaka'].invoke
+      Rake::Task['git:add'].invoke(DATA_DIR)
+      Rake::Task['git:commit'].invoke("Tanaka #{Time.now}")
+    end
   end
 
   namespace :dl do
@@ -78,6 +86,11 @@ namespace :data do
     desc "Download Radk"
     task :radk => [:ensure_data_directory] do
       dl_and_gunzip('ftp://ftp.monash.edu.au/pub/nihongo/radkfile.gz')
+    end
+    
+    desc "Download Tanaka Corpus"
+    task :tanaka => [:ensure_data_directory] do
+      dl_and_gunzip('http://www.csse.monash.edu.au/~jwb/examples.utf.gz')
     end
 
     def dl(url)
