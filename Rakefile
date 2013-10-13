@@ -37,6 +37,7 @@ namespace :data do
     Rake::Task['git:pull'].invoke
     Rake::Task['data:update:jmdict'].invoke
     Rake::Task['data:update:kanjidic2'].invoke
+    Rake::Task['data:update:radk'].invoke
     Rake::Task['git:push'].invoke
   end
   
@@ -54,6 +55,13 @@ namespace :data do
       Rake::Task['git:add'].invoke(DATA_DIR)
       Rake::Task['git:commit'].invoke("Kanjidic2 #{Time.now}")
     end
+    
+    desc "Update Radkfile"
+    task :radk do
+      Rake::Task['data:dl:radk'].invoke
+      Rake::Task['git:add'].invoke(DATA_DIR)
+      Rake::Task['git:commit'].invoke("Radk #{Time.now}")
+    end
   end
 
   namespace :dl do
@@ -65,6 +73,11 @@ namespace :data do
     desc "Download Kanjidic2"
     task :kanjidic2 => [:ensure_data_directory] do
       dl_and_gunzip('http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz')
+    end
+    
+    desc "Download Radk"
+    task :radk => [:ensure_data_directory] do
+      dl_and_gunzip('ftp://ftp.monash.edu.au/pub/nihongo/radkfile.gz')
     end
 
     def dl(url)
