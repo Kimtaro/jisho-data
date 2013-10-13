@@ -20,7 +20,10 @@ namespace :git do
   
   desc "Git commit"
   task :commit, :message do |t, args|
-    sh "git commit -m '#{args[:message]}'"
+    status = %x{git status}
+    unless status =~ /nothing to commit|no changes added to commit/
+      sh "git commit -m '#{args[:message]}'"
+    end
   end
 end
 
