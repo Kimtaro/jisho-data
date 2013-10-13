@@ -1,0 +1,1 @@
+Data files used in the new Jisho.org. Updated daily from their respective sources and might contain manual edits by @kimtaro.
