@@ -36,8 +36,11 @@ namespace :data do
   task :all do
     Rake::Task['git:pull'].invoke
     Rake::Task['data:update:jmdict'].invoke
+    Rake::Task['git:push'].invoke
     Rake::Task['data:update:kanjidic2'].invoke
+    Rake::Task['git:push'].invoke
     Rake::Task['data:update:radk'].invoke
+    Rake::Task['git:push'].invoke
     Rake::Task['data:update:tanaka'].invoke
     Rake::Task['git:push'].invoke
   end
