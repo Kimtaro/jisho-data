@@ -35,12 +35,28 @@ namespace :data do
   desc "Download and update all data"
   task :all do
     Rake::Task['git:pull'].invoke
+    
     Rake::Task['data:update:jmdict'].invoke
     Rake::Task['git:push'].invoke
+    
+    Rake::Task['git:add'].reenable
+    Rake::Task['git:commit'].reenable
+    Rake::Task['git:push'].reenable
+    
     Rake::Task['data:update:kanjidic2'].invoke
     Rake::Task['git:push'].invoke
+
+    Rake::Task['git:add'].reenable
+    Rake::Task['git:commit'].reenable
+    Rake::Task['git:push'].reenable
+
     Rake::Task['data:update:radk'].invoke
     Rake::Task['git:push'].invoke
+
+    Rake::Task['git:add'].reenable
+    Rake::Task['git:commit'].reenable
+    Rake::Task['git:push'].reenable
+
     Rake::Task['data:update:tanaka'].invoke
     Rake::Task['git:push'].invoke
   end
