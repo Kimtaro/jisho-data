@@ -12,12 +12,12 @@ namespace :git do
   task :push do
     sh "git push"
   end
-  
+
   desc "Git add ."
   task :add, :path do |t, args|
     sh "git add #{args[:path]}"
   end
-  
+
   desc "Git commit"
   task :commit, :message do |t, args|
     status = %x{git status}
@@ -35,14 +35,14 @@ namespace :data do
   desc "Download and update all data"
   task :all do
     Rake::Task['git:pull'].invoke
-    
+
     Rake::Task['data:update:jmdict'].invoke
     Rake::Task['git:push'].invoke
-    
+
     Rake::Task['git:add'].reenable
     Rake::Task['git:commit'].reenable
     Rake::Task['git:push'].reenable
-    
+
     Rake::Task['data:update:kanjidic2'].invoke
     Rake::Task['git:push'].invoke
 
@@ -60,7 +60,7 @@ namespace :data do
     Rake::Task['data:update:tanaka'].invoke
     Rake::Task['git:push'].invoke
   end
-  
+
   namespace :update do
     desc "Update JMdict"
     task :jmdict do
@@ -68,21 +68,21 @@ namespace :data do
       Rake::Task['git:add'].invoke(DATA_DIR)
       Rake::Task['git:commit'].invoke("JMdict #{Time.now}")
     end
-    
+
     desc "Update Kanjidic2"
     task :kanjidic2 do
       Rake::Task['data:dl:kanjidic2'].invoke
       Rake::Task['git:add'].invoke(DATA_DIR)
       Rake::Task['git:commit'].invoke("Kanjidic2 #{Time.now}")
     end
-    
+
     desc "Update Radkfile"
     task :radk do
       Rake::Task['data:dl:radk'].invoke
       Rake::Task['git:add'].invoke(DATA_DIR)
       Rake::Task['git:commit'].invoke("Radk #{Time.now}")
     end
-    
+
     desc "Update Tanaka corpus"
     task :tanaka do
       Rake::Task['data:dl:tanaka'].invoke
@@ -96,20 +96,20 @@ namespace :data do
     task :jmdict => [:ensure_data_directory] do
       dl_and_gunzip('http://ftp.monash.edu.au/pub/nihongo/JMdict.gz')
     end
-    
+
     desc "Download Kanjidic2"
     task :kanjidic2 => [:ensure_data_directory] do
       dl_and_gunzip('http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz')
     end
-    
+
     desc "Download Radk"
     task :radk => [:ensure_data_directory] do
       dl_and_gunzip('ftp://ftp.monash.edu.au/pub/nihongo/radkfile.gz')
     end
-    
+
     desc "Download Tanaka Corpus"
     task :tanaka => [:ensure_data_directory] do
-      dl_and_gunzip('http://www.csse.monash.edu.au/~jwb/examples.utf.gz')
+      dl('http://tatoeba.org/files/downloads/wwwjdic.csv')
     end
 
     def dl(url)
