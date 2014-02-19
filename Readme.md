@@ -1,3 +1,5 @@
+#### This project is no longer in use and the files are no longer being update.
+
 Data files used in the new Jisho.org. Updated daily from their respective sources and might contain manual edits by [@kimtaro](http://github.com/kimtaro).
 
 |     | JMdict |
